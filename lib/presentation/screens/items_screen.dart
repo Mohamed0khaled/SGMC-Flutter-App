@@ -13,8 +13,7 @@ class ItemsScreen extends StatelessWidget {
       appBar: AppBar(
         title: BlocBuilder<ServiceCubit, ServiceState>(
           builder: (context, state) {
-            if (state is ServiceLoaded &&
-                state.selectedProviderType != null) {
+            if (state is ServiceLoaded && state.selectedProviderType != null) {
               return Text(state.selectedProviderType!);
             }
             return const Text('Results');
@@ -23,32 +22,49 @@ class ItemsScreen extends StatelessWidget {
       ),
       body: BlocBuilder<ServiceCubit, ServiceState>(
         builder: (context, state) {
-          if (state is! ServiceLoaded ||
-              state.groupedItemsByArea == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          if (state is! ServiceLoaded || state.groupedItemsByArea == null) {
+            return const Center(child: CircularProgressIndicator());
           }
 
           final grouped = state.groupedItemsByArea!;
 
           if (grouped.isEmpty) {
-            return const Center(
-              child: Text('No services found'),
-            );
+            return const Center(child: Text('No services found'));
           }
 
-          return ListView(
-            padding: const EdgeInsets.all(12),
-            children: grouped.entries.map((entry) {
-              final areaName = entry.key;
-              final items = entry.value;
+          return Column(
+            children: [
+              // Scoped Search Bar
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: TextField(
+                  onChanged: (query) {
+                    context.read<ServiceCubit>().searchInCategory(query);
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Search in this category...',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    filled: true,
+                  ),
+                ),
+              ),
 
-              return _AreaSection(
-                areaName: areaName,
-                items: items,
-              );
-            }).toList(),
+              // Results grouped by area
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  children: grouped.entries.map((entry) {
+                    final areaName = entry.key;
+                    final items = entry.value;
+
+                    return _AreaSection(areaName: areaName, items: items);
+                  }).toList(),
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -56,15 +72,11 @@ class ItemsScreen extends StatelessWidget {
   }
 }
 
-
 class _AreaSection extends StatelessWidget {
   final String areaName;
   final List<ItemModel> items;
 
-  const _AreaSection({
-    required this.areaName,
-    required this.items,
-  });
+  const _AreaSection({required this.areaName, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +88,9 @@ class _AreaSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Text(
             areaName,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
 
@@ -101,4 +112,3 @@ class _AreaSection extends StatelessWidget {
     );
   }
 }
-

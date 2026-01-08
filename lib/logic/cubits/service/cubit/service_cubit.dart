@@ -50,7 +50,7 @@ class ServiceCubit extends Cubit<ServiceState> {
 
     print('🔍 DEBUG: Selecting governorate: "$governorate"');
     print('🔍 DEBUG: Total items count: ${current.items.length}');
-    
+
     // Debug: Check what governorates exist in data
     final uniqueGovs = current.items.map((e) => e.governorate).toSet();
     print('🔍 DEBUG: Unique governorates in data: $uniqueGovs');
@@ -127,6 +127,23 @@ class ServiceCubit extends Cubit<ServiceState> {
 
     final current = state as ServiceLoaded;
 
+    // If query is empty, clear search results
+    if (query.trim().isEmpty) {
+      emit(
+        ServiceLoaded(
+          items: current.items,
+          governorates: current.governorates,
+          providerTypes: current.providerTypes,
+          homeSearchResults: null, // Clear search
+          selectedGovernorate: current.selectedGovernorate,
+          selectedProviderType: current.selectedProviderType,
+          filteredItems: current.filteredItems,
+          groupedItemsByArea: current.groupedItemsByArea,
+        ),
+      );
+      return;
+    }
+
     // Search in complete dataset
     final results = repository.searchItems(items: current.items, query: query);
 
@@ -156,6 +173,26 @@ class ServiceCubit extends Cubit<ServiceState> {
 
     // Guard: cannot search in category without filtered items
     if (current.filteredItems == null) return;
+
+    // If query is empty, restore original grouping
+    if (query.trim().isEmpty) {
+      final originalGrouped = repository.groupItemsByArea(
+        current.filteredItems!,
+      );
+      emit(
+        ServiceLoaded(
+          items: current.items,
+          governorates: current.governorates,
+          providerTypes: current.providerTypes,
+          selectedGovernorate: current.selectedGovernorate,
+          selectedProviderType: current.selectedProviderType,
+          filteredItems: current.filteredItems,
+          groupedItemsByArea: originalGrouped, // Restore original
+          homeSearchResults: current.homeSearchResults,
+        ),
+      );
+      return;
+    }
 
     // Search within current category only
     final searchResults = repository.searchItems(
