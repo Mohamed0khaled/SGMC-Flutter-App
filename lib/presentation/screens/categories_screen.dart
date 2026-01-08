@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sgmc_app/core/localization/app_localizations.dart';
 import 'package:sgmc_app/core/theme/app_theme.dart';
 import 'package:sgmc_app/presentation/screens/items_screen.dart';
 import 'package:sgmc_app/presentation/widgets/app_widgets.dart';
@@ -18,7 +19,7 @@ class CategoriesScreen extends StatelessWidget {
             if (state is ServiceLoaded && state.selectedGovernorate != null) {
               return Text(state.selectedGovernorate!);
             }
-            return const Text('Categories');
+            return Text(AppLocalizations.of(context).categories);
           },
         ),
       ),
@@ -27,8 +28,8 @@ class CategoriesScreen extends StatelessWidget {
           print('🎨 Categories Screen - State: ${state.runtimeType}');
           
           if (state is! ServiceLoaded) {
-            return const AppLoadingIndicator(
-              message: 'Loading categories...',
+            return AppLoadingIndicator(
+              message: AppLocalizations.of(context).loadingGovernorates,
             );
           }
 
@@ -54,12 +55,12 @@ class CategoriesScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Service Categories',
+                      AppLocalizations.of(context).categories,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const SizedBox(height: AppDimensions.spacingSmall),
                     Text(
-                      '${categories.length} categories available',
+                      '${categories.length} ${categories.length == 1 ? 'category' : 'categories'} available',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).textTheme.bodySmall?.color,
                           ),

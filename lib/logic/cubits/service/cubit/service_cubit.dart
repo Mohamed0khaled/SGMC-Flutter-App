@@ -6,8 +6,9 @@ import 'package:sgmc_app/logic/cubits/service/cubit/service_state.dart';
 /// Manages the complete data flow: Load → Select Governorate → Select Category → Display Items
 class ServiceCubit extends Cubit<ServiceState> {
   final ServiceRepository repository;
+  String languageCode;
 
-  ServiceCubit(this.repository) : super(ServiceInitial());
+  ServiceCubit(this.repository, this.languageCode) : super(ServiceInitial());
 
   /// Load all data from JSON and emit initial state
   /// This is called once when app starts
@@ -15,8 +16,8 @@ class ServiceCubit extends Cubit<ServiceState> {
     emit(ServiceLoading());
 
     try {
-      // Load complete dataset
-      final items = await repository.getAllItems();
+      // Load complete dataset with language preference
+      final items = await repository.getAllItems(languageCode: languageCode);
 
       // Extract unique governorates
       final governorates = repository.getGovernorates(items);
@@ -38,6 +39,14 @@ class ServiceCubit extends Cubit<ServiceState> {
     } catch (e) {
       emit(ServiceError(e.toString()));
     }
+  }
+
+  /// Update language and reload data
+  Future<void> updateLanguage(String newLanguageCode) async {
+    if (languageCode == newLanguageCode) return; // No change needed
+    
+    languageCode = newLanguageCode;
+    await loadData(); // Reload data with new language
   }
 
   /// Select a governorate and load its provider types (categories)

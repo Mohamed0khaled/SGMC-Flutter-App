@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sgmc_app/core/localization/app_localizations.dart';
 import 'package:sgmc_app/logic/cubits/service/cubit/service_cubit.dart';
 import 'package:sgmc_app/logic/cubits/service/cubit/service_state.dart';
+import 'package:sgmc_app/presentation/screens/item_details_screen.dart';
 import '../../data/models/item_model.dart';
 
 class ItemsScreen extends StatelessWidget {
@@ -16,7 +18,7 @@ class ItemsScreen extends StatelessWidget {
             if (state is ServiceLoaded && state.selectedProviderType != null) {
               return Text(state.selectedProviderType!);
             }
-            return const Text('Results');
+            return Text(AppLocalizations.of(context).results);
           },
         ),
       ),
@@ -29,7 +31,7 @@ class ItemsScreen extends StatelessWidget {
           final grouped = state.groupedItemsByArea!;
 
           if (grouped.isEmpty) {
-            return const Center(child: Text('No services found'));
+            return Center(child: Text(AppLocalizations.of(context).noServicesFound));
           }
 
           return Column(
@@ -42,7 +44,7 @@ class ItemsScreen extends StatelessWidget {
                     context.read<ServiceCubit>().searchInCategory(query);
                   },
                   decoration: InputDecoration(
-                    hintText: 'Search in this category...',
+                    hintText: AppLocalizations.of(context).searchInCategory,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -103,7 +105,12 @@ class _AreaSection extends StatelessWidget {
               subtitle: Text(item.specialty),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                // لاحقًا: Details Screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ItemDetailsScreen(item: item),
+                  ),
+                );
               },
             ),
           );

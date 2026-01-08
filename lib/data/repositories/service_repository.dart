@@ -6,8 +6,8 @@ class ServiceRepository {
 
   ServiceRepository(this.localDataSource);
 
-  Future<List<ItemModel>> getAllItems() {
-    return localDataSource.loadItems();
+  Future<List<ItemModel>> getAllItems({String? languageCode}) {
+    return localDataSource.loadItems(languageCode: languageCode);
   }
 
   /// Get unique governorates from items

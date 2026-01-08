@@ -25,8 +25,9 @@ class AppListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
-      color: backgroundColor ?? AppColors.surface,
+      color: backgroundColor,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.cardRadius),
@@ -44,7 +45,7 @@ class AppListCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: AppTextStyles.titleMedium,
+                      style: theme.textTheme.titleMedium,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -52,7 +53,7 @@ class AppListCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         subtitle!,
-                        style: AppTextStyles.bodySmall,
+                        style: theme.textTheme.bodySmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -67,7 +68,7 @@ class AppListCard extends StatelessWidget {
               else if (onTap != null)
                 Icon(
                   Icons.arrow_forward_ios,
-                  color: AppColors.iconSecondary,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
                   size: 16,
                 ),
             ],
@@ -96,6 +97,7 @@ class AppEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.paddingLarge),
@@ -106,27 +108,27 @@ class AppEmptyState extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 64,
-                color: AppColors.primary.withValues(alpha: 0.6),
+                color: theme.colorScheme.primary.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLarge),
             Text(
               message,
-              style: AppTextStyles.titleLarge,
+              style: theme.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             if (description != null) ...[
               const SizedBox(height: AppDimensions.spacingSmall),
               Text(
                 description!,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -152,6 +154,7 @@ class AppErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppDimensions.paddingLarge),
@@ -162,26 +165,26 @@ class AppErrorState extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.1),
+                color: theme.colorScheme.error.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.error_outline,
                 size: 64,
-                color: AppColors.error,
+                color: theme.colorScheme.error,
               ),
             ),
             const SizedBox(height: AppDimensions.spacingLarge),
             Text(
               'Oops! Something went wrong',
-              style: AppTextStyles.titleLarge,
+              style: theme.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.spacingSmall),
             Text(
               message,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
             ),
@@ -209,6 +212,7 @@ class AppLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -218,8 +222,8 @@ class AppLoadingIndicator extends StatelessWidget {
             const SizedBox(height: AppDimensions.spacingMedium),
             Text(
               message!,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
           ],
