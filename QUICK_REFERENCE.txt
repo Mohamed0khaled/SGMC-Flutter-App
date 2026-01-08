@@ -1,0 +1,289 @@
+// QUICK REFERENCE - Copy & Paste Ready Components
+// Import these at the top of any screen:
+import 'package:sgmc_app/core/theme/app_theme.dart';
+import 'package:sgmc_app/core/theme/app_colors.dart';
+import 'package:sgmc_app/core/theme/app_text_styles.dart';
+import 'package:sgmc_app/core/widgets/app_widgets.dart';
+
+// ═══════════════════════════════════════════════════════════════
+// 1. LIST CARD - Use for any list items
+// ═══════════════════════════════════════════════════════════════
+AppListCard(
+  title: 'Item Title',
+  subtitle: 'Optional subtitle text',
+  leadingIcon: Icons.location_city,
+  onTap: () {
+    // Your navigation or action
+  },
+)
+
+// With custom trailing widget:
+AppListCard(
+  title: 'Item with rating',
+  subtitle: 'Location info',
+  leadingIcon: Icons.business,
+  trailing: Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Icon(Icons.star, color: Colors.amber, size: 16),
+      Text('4.5'),
+    ],
+  ),
+  onTap: () {},
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 2. LOADING STATE
+// ═══════════════════════════════════════════════════════════════
+const AppLoadingIndicator(
+  message: 'Loading data...',
+)
+
+// Without message:
+const AppLoadingIndicator()
+
+// ═══════════════════════════════════════════════════════════════
+// 3. ERROR STATE
+// ═══════════════════════════════════════════════════════════════
+AppErrorState(
+  message: 'Could not load data',
+  onRetry: () {
+    // Retry logic
+    context.read<YourCubit>().loadData();
+  },
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 4. EMPTY STATE
+// ═══════════════════════════════════════════════════════════════
+const AppEmptyState(
+  icon: Icons.search_off,
+  message: 'No Results Found',
+  description: 'Try adjusting your search criteria',
+)
+
+// With action button:
+AppEmptyState(
+  icon: Icons.folder_open,
+  message: 'No Items Available',
+  description: 'Start by adding your first item',
+  action: ElevatedButton(
+    onPressed: () {},
+    child: const Text('Add Item'),
+  ),
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 5. SEARCH BAR
+// ═══════════════════════════════════════════════════════════════
+AppSearchBar(
+  hintText: 'Search...',
+  onChanged: (value) {
+    // Filter logic
+  },
+)
+
+// With controller:
+final searchController = TextEditingController();
+AppSearchBar(
+  hintText: 'Search services...',
+  controller: searchController,
+  onChanged: (value) => filterItems(value),
+  onClear: () {
+    searchController.clear();
+    resetFilter();
+  },
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 6. SECTION HEADER
+// ═══════════════════════════════════════════════════════════════
+const AppSectionHeader(
+  title: 'POPULAR SERVICES',
+)
+
+// With trailing button:
+AppSectionHeader(
+  title: 'RECENT ITEMS',
+  trailing: TextButton(
+    onPressed: () {},
+    child: const Text('See All'),
+  ),
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 7. STANDARD SCREEN LAYOUT
+// ═══════════════════════════════════════════════════════════════
+Scaffold(
+  appBar: AppBar(
+    title: const Text('Screen Title'),
+  ),
+  body: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Header section (optional)
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppDimensions.paddingMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Page Title',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: AppDimensions.spacingSmall),
+            Text(
+              'Page description or subtitle',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+      
+      const Divider(height: 1),
+      
+      // Main content
+      Expanded(
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppDimensions.paddingSmall,
+          ),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return AppListCard(
+              title: items[index].name,
+              subtitle: items[index].description,
+              leadingIcon: Icons.category,
+              onTap: () => navigateToItem(items[index]),
+            );
+          },
+        ),
+      ),
+    ],
+  ),
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 8. COLORS - Direct Usage
+// ═══════════════════════════════════════════════════════════════
+Container(
+  color: AppColors.primary,           // Main brand color
+  child: Text(
+    'Text',
+    style: TextStyle(color: AppColors.textOnPrimary),
+  ),
+)
+
+// Status colors:
+Icon(Icons.check, color: AppColors.success)
+Icon(Icons.error, color: AppColors.error)
+Icon(Icons.warning, color: AppColors.warning)
+Icon(Icons.info, color: AppColors.info)
+
+// ═══════════════════════════════════════════════════════════════
+// 9. TEXT STYLES - Direct Usage
+// ═══════════════════════════════════════════════════════════════
+Text('Display Text', style: AppTextStyles.displayLarge)
+Text('Headline', style: AppTextStyles.headlineMedium)
+Text('Title', style: AppTextStyles.titleMedium)
+Text('Body text', style: AppTextStyles.bodyMedium)
+Text('Caption', style: AppTextStyles.caption)
+
+// Or use theme:
+Text('Title', style: Theme.of(context).textTheme.titleMedium)
+Text('Body', style: Theme.of(context).textTheme.bodyMedium)
+
+// ═══════════════════════════════════════════════════════════════
+// 10. SPACING - Use Constants
+// ═══════════════════════════════════════════════════════════════
+SizedBox(height: AppDimensions.spacingSmall)    // 8px
+SizedBox(height: AppDimensions.spacingMedium)   // 16px
+SizedBox(height: AppDimensions.spacingLarge)    // 24px
+
+EdgeInsets.all(AppDimensions.paddingSmall)      // 8px
+EdgeInsets.all(AppDimensions.paddingMedium)     // 16px
+EdgeInsets.all(AppDimensions.paddingLarge)      // 24px
+
+// ═══════════════════════════════════════════════════════════════
+// 11. BUTTONS
+// ═══════════════════════════════════════════════════════════════
+ElevatedButton(
+  onPressed: () {},
+  child: const Text('Primary Action'),
+)
+
+ElevatedButton.icon(
+  onPressed: () {},
+  icon: const Icon(Icons.add),
+  label: const Text('Add Item'),
+)
+
+TextButton(
+  onPressed: () {},
+  child: const Text('Secondary Action'),
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 12. CARDS (Manual)
+// ═══════════════════════════════════════════════════════════════
+Card(
+  child: Padding(
+    padding: const EdgeInsets.all(AppDimensions.paddingMedium),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Section Title', style: AppTextStyles.titleMedium),
+        const SizedBox(height: AppDimensions.spacingSmall),
+        Text('Content here', style: AppTextStyles.bodyMedium),
+      ],
+    ),
+  ),
+)
+
+// ═══════════════════════════════════════════════════════════════
+// 13. BLOC BUILDER PATTERN (with UI states)
+// ═══════════════════════════════════════════════════════════════
+BlocBuilder<YourCubit, YourState>(
+  builder: (context, state) {
+    if (state is YourLoadingState) {
+      return const AppLoadingIndicator(message: 'Loading...');
+    }
+    
+    if (state is YourLoadedState) {
+      if (state.items.isEmpty) {
+        return const AppEmptyState(
+          icon: Icons.inbox,
+          message: 'No Items',
+          description: 'No items available at this time',
+        );
+      }
+      
+      return ListView.builder(
+        itemCount: state.items.length,
+        itemBuilder: (context, index) {
+          return AppListCard(
+            title: state.items[index].name,
+            onTap: () {},
+          );
+        },
+      );
+    }
+    
+    if (state is YourErrorState) {
+      return AppErrorState(
+        message: state.message,
+        onRetry: () => context.read<YourCubit>().loadData(),
+      );
+    }
+    
+    return const SizedBox.shrink();
+  },
+)
+
+// ═══════════════════════════════════════════════════════════════
+// END OF QUICK REFERENCE
+// All components are theme-aware and production-ready!
+// ═══════════════════════════════════════════════════════════════
