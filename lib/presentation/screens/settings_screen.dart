@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgmc_app/core/localization/app_localizations.dart';
-import 'package:sgmc_app/core/theme/app_colors.dart';
-import 'package:sgmc_app/core/theme/app_text_styles.dart';
 import 'package:sgmc_app/core/theme/app_theme.dart';
 import 'package:sgmc_app/logic/cubits/settings/settings_cubit.dart';
 import 'package:sgmc_app/logic/cubits/settings/settings_state.dart';
@@ -62,12 +60,13 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Text(
         title,
-        style: AppTextStyles.titleMedium.copyWith(
-          color: AppColors.primary,
+        style: theme.textTheme.titleMedium?.copyWith(
+          color: theme.colorScheme.primary,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -200,6 +199,7 @@ class _ThemeTile extends StatelessWidget {
 class _AboutDeveloperCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     return Card(
@@ -210,7 +210,7 @@ class _AboutDeveloperCard extends StatelessWidget {
             // Developer Avatar
             CircleAvatar(
               radius: 40,
-              backgroundColor: AppColors.primary,
+              backgroundColor: theme.colorScheme.primary,
               child: const Icon(
                 Icons.person,
                 size: 40,
@@ -223,7 +223,7 @@ class _AboutDeveloperCard extends StatelessWidget {
             // Developer Info
             Text(
               isArabic ? 'محمد خالد' : 'Mohamed Khaled',
-              style: AppTextStyles.titleLarge.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -234,23 +234,13 @@ class _AboutDeveloperCard extends StatelessWidget {
               isArabic
                   ? 'مطور تطبيقات Flutter'
                   : 'Flutter Developer',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
 
             const SizedBox(height: AppDimensions.spacingMedium),
-
-            // Bio
-            Text(
-              isArabic
-                  ? 'متخصص في تطوير تطبيقات الهاتف المحمول باستخدام Flutter مع التركيز على Clean Architecture والتصميم الحديث.'
-                  : 'Specialized in mobile app development using Flutter with focus on Clean Architecture and modern design.',
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            
           ],
         ),
       ),

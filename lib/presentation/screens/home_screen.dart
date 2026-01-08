@@ -96,31 +96,6 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header Section
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(AppDimensions.paddingMedium),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context).chooseLocation,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: AppDimensions.spacingSmall),
-                        Text(
-                          AppLocalizations.of(context).selectGovernorateDesc,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.bodySmall?.color,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const Divider(height: 1),
 
                   // Global Search Bar
                   Padding(
